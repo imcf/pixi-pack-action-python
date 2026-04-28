@@ -1,41 +1,35 @@
-# Pixi-Pack Action
+# Pixi-Pack action using the `pixi-build-python` backend
 
-Using the pixi-pack action you can automatically create cross-platform self-extracting binaries that contains your pixi environments.
+Using this action you can create cross-platform self-extracting archives of pixi
+environments.
 
-See also the [pixi-pack-install-script action](https://github.com/Wytamma/pixi-pack-install-script) that can be used to create install scripts for packages from your environments.
+It is a fork of the [pixi-pack-action] that is using the *Rattler* backend.
 
-# Example 
+[pixi-pack-action]: https://github.com/Wytamma/pixi-pack-action
 
-We have a repo https://github.com/Wytamma/pixi-python that contains a pixi environment with python and uses the pixi-pack action to create a packed version of the environment for mac, linux and windows when a release is created.
-
-The exact environment can be reproduced by running the following commands:
-
-```bash
-# Download the environment
-wget https://github.com/Wytamma/pixi-python/releases/download/v1.0.8/pixi-python-v1.0.8-osx-arm64.sh -O environment.sh
-# Setup the environment
-chmod +x environment.sh
-./environment.sh
-# Activate the environment
-source ./environment.sh
-```
-
-# Example Workflow
+## Example Workflow
 
 ```yaml
-name: "Build for Multiple Platforms & Create Release"
+name: 👷 Build & package via Pixi 🧚
+
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+
+  release:
+    types:
+      - published  # A release, pre-release, or draft of a release was published.
+
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
+
+  build-and-package:
+
+    name: Build package 📦 using pixi-build-python 🧚📦🐍
+
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -43,16 +37,16 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Check out the code
-        uses: actions/checkout@v3
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v6
 
-      - name: Run Pixi-Pack
-        uses: wytamma/pixi-pack-action@v4
+      - name: Run Pixi-Pack 🧚📦
+        uses: ehrenfeu/pixi-pack-action-python@v7
         with:
           platform: ${{ matrix.platform }}
 
-      - name: Upload to Release
-        uses: softprops/action-gh-release@v2
+      - name: 📤 Upload to Release
+        uses: softprops/action-gh-release@v3
         with:
           files: "${{ github.event.repository.name }}-*.sh, ${{ github.event.repository.name }}-*.ps1"
 ```
