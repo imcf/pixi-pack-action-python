@@ -1,11 +1,9 @@
 # Pixi-Pack action using the `pixi-build-python` backend
 
 Using this action you can create cross-platform self-extracting archives of pixi
-environments.
+environments through the [pixi-build-python] backend.
 
-It is a fork of the [pixi-pack-action] that is using the *Rattler* backend.
-
-[pixi-pack-action]: https://github.com/Wytamma/pixi-pack-action
+It is a fork of the [pixi-pack-action] that is using the [rattler] backend.
 
 ## Example Workflow
 
@@ -50,3 +48,7 @@ jobs:
         with:
           files: "${{ github.event.repository.name }}-*.sh, ${{ github.event.repository.name }}-*.ps1"
 ```
+
+[pixi-pack-action]: https://github.com/Wytamma/pixi-pack-action
+[pixi-build-python]: https://pixi.prefix.dev/latest/build/backends/pixi-build-python/
+[rattler]: https://pixi.prefix.dev/latest/build/backends/pixi-build-rattler-build/
