@@ -12,41 +12,43 @@ name: 👷 Build & package via Pixi 🧚
 
 on:
 
-  release:
-    types:
-      - published  # A release, pre-release, or draft of a release was published.
+    release:
+        types:
+            - published # A release, pre-release, or draft of a release was published.
 
-  workflow_dispatch:
+    workflow_dispatch:
 
 permissions:
-  contents: write
+    contents: write
 
 jobs:
 
-  build-and-package:
+    build-and-package:
 
-    name: Build package 🧚📦🐍
+        name: Build package 🧚📦🐍
 
-    runs-on: ubuntu-24.04
+        runs-on: ubuntu-24.04
 
-    strategy:
-      matrix:
-        platform: ["osx-arm64", "linux-64", "win-64"]
-      fail-fast: false
+        strategy:
+            matrix:
+                platform: [ "osx-arm64", "linux-64", "win-64" ]
+            fail-fast: false
 
-    steps:
-      - name: 📥 Checkout repo
-        uses: actions/checkout@v6
+        steps:
+            - name: 📥 Checkout repo
+              uses: actions/checkout@v6
 
-      - name: Run Pixi-Pack 🧚📦
-        uses: ehrenfeu/pixi-pack-action-python@v7
-        with:
-          platform: ${{ matrix.platform }}
+            - name: Run Pixi-Pack 🧚📦
+              uses: ehrenfeu/pixi-pack-action-python@v7
+              with:
+                  platform: ${{ matrix.platform }}
 
-      - name: 📤 Upload to Release
-        uses: softprops/action-gh-release@v3
-        with:
-          files: "${{ github.event.repository.name }}-*.sh, ${{ github.event.repository.name }}-*.ps1"
+            - name: 📤 Upload to Release
+              uses: softprops/action-gh-release@v3
+              with:
+                  files: |
+                      ${{ github.event.repository.name }}-*.sh
+                      ${{ github.event.repository.name }}-*.ps1
 ```
 
 [pixi-pack-action]: https://github.com/Wytamma/pixi-pack-action
