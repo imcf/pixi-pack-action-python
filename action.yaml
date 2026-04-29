@@ -1,5 +1,5 @@
 name: Pixi-Pack action using 'pixi-build-python'
-description: Use pixi-pack with the 'pixi-build-python' backend to create packaged environments and installers.
+description: 🧚💛🐍 A "pixi-pack" action using "pixi-build-python".
 author: ehrenfeu
 branding:
   icon: package
