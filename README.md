@@ -27,7 +27,7 @@ jobs:
 
   build-and-package:
 
-    name: Build package 📦 using pixi-build-python 🧚📦🐍
+    name: Build package 🧚📦🐍
 
     runs-on: ubuntu-24.04
 

@@ -1,5 +1,5 @@
-name: "Pixi-Pack Action"
-description: "Use pixi-pack to create packed environments and installers"
+name: Pixi-Pack action using 'pixi-build-python'
+description: Use pixi-pack with the 'pixi-build-python' backend to create packaged environments and installers.
 author: ehrenfeu
 branding:
   icon: 'upload'
@@ -7,43 +7,35 @@ branding:
 
 inputs:
   environment:
-    description: "Environment to pack"
+    description: "Name of the environment to pack (optional, will use 'default' if not specified)."
     required: false
     default: 'default'
   platform:
-    description: "Target platform for the environment (e.g., linux-64, osx-64, win-64)"
+    description: "Target platform for the environment (e.g., 'linux-64', 'osx-64', 'win-64')."
     required: false
   version:
-    description: "Version string to embed in the output filename. Defaults to github.ref_name."
+    description: "Version string to embed in the output filename (optional, defaults to `github.ref_name`)."
     default: ""
   pixi-pack-version:
-    description: "Version of pixi-pack to use"
+    description: "Version of pixi-pack to use (default: '0.7.6')."
     required: false
     default: '0.7.6'
 
 runs:
   using: "composite"
   steps:
-  # 1) Install Pixi (using prefix-dev/setup-pixi)
+
   - name: Install Pixi
     uses: prefix-dev/setup-pixi@v0.9.4
     with:
       pixi-version: v0.67.2
       cache: true
 
-  # - run: pixi run test
 
-  # - name: foo
-  #   uses: prefix-dev/setup-pixi@v0.8.3
-  #   with:
-  #     runInstall: false
-
-  # 2) Install pixi-pack & rattler-build globally via pixi
   - name: Install pixi-pack
     run: pixi global install pixi-pack==${{ inputs.pixi-pack-version }}
     shell: bash
 
-  # 4) Run pixi-pack with optional --inject
   - name: Run pixi-pack
     run: |
       echo "==> Packing environment for platform: ${{ inputs.platform }}"
@@ -59,7 +51,6 @@ runs:
       eval "$PACK_CMD"
     shell: bash
 
-  # 5) Rename the output file
   - name: Rename output file
     run: |
       OUTPUT_FILE=$(ls -1 | grep -E 'environment\.(sh|ps1)' | head -n 1)
